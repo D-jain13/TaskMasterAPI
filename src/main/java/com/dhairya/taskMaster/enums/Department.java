@@ -2,8 +2,8 @@ package com.dhairya.taskMaster.enums;
 
 public enum Department {
 	
-	APPLICATION_DEVELOPMENT, 
+	SOFTWARE_DEVELOPMENT, 
 	CLOUD, 
-	PRE_SALES, 
+	SALES, 
 	HUMAN_RESOURCE
 }

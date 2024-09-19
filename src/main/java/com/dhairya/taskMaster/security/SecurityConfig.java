@@ -3,6 +3,7 @@ package com.dhairya.taskMaster.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -54,11 +55,12 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(request -> request
-				// .requestMatchers(HttpMethod.POST,"/developer/create").permitAll()
+				 .requestMatchers(HttpMethod.POST,"/hod/create").permitAll()
 //				.requestMatchers("/hod/**").hasRole("HOD").requestMatchers("/pm/**").hasAnyRole("PM", "HOD")
 //				.requestMatchers("/tl/**").hasAnyRole("PM", "TL", "HOD").requestMatchers("/dev/**")
 //				.hasAnyRole("HOD", "DEV", "PM", "TL")
-				.requestMatchers("/login").permitAll()
+				 .requestMatchers("/**").permitAll()
+				.requestMatchers("/login","/hod/**").permitAll()
 				.requestMatchers("/refreshToken").permitAll()
 				.requestMatchers("/developer/getMyTasks/**").hasRole("DEV")
 				// .requestMatchers("/api/login","/api/logout").permitAll()

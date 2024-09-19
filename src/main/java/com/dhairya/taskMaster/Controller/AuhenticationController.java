@@ -11,6 +11,9 @@ import com.dhairya.taskMaster.DTOs.AuthDTO;
 import com.dhairya.taskMaster.DTOs.JwtResponse;
 import com.dhairya.taskMaster.DTOs.RefreshTokenDTO;
 import com.dhairya.taskMaster.entity.RefreshToken;
+import com.dhairya.taskMaster.security.JwtService;
+import com.dhairya.taskMaster.service.AuthService;
+import com.dhairya.taskMaster.service.RefreshTokenService;
 
 
 @RestController
@@ -28,8 +31,9 @@ public class AuhenticationController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AuthDTO authDTO) {
 		String accessToken = authService.verify(authDTO);
-		RefreshToken refreshToken = refreshTokenService.createRefreshToken(authDTO.getEmail());
-		JwtResponse jwtResponse = new JwtResponse(accessToken,refreshToken.getToken());
+		//RefreshToken refreshToken = refreshTokenService.createRefreshToken(authDTO.getEmail());
+		//JwtResponse jwtResponse = new JwtResponse(accessToken,refreshToken.getToken());
+		JwtResponse jwtResponse = new JwtResponse(accessToken);
 		return new ResponseEntity<>(jwtResponse,HttpStatus.OK);
 	}
 	
