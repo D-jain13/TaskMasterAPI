@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dhairya.taskMaster.DTOs.ProjectManagerDTO;
@@ -17,6 +18,7 @@ import com.dhairya.taskMaster.entity.ProjectManager;
 import com.dhairya.taskMaster.entity.Task;
 import com.dhairya.taskMaster.entity.TeamLead;
 import com.dhairya.taskMaster.enums.Department;
+import com.dhairya.taskMaster.enums.Role;
 import com.dhairya.taskMaster.exception.ResourceAlreadyExistsException;
 import com.dhairya.taskMaster.exception.ResourceNotFoundException;
 import com.dhairya.taskMaster.repository.HODRepo;
@@ -31,6 +33,9 @@ public class ProjectManagerService {
 	@Autowired
 	HODRepo hodRepo;
 
+	@Autowired
+	PasswordEncoder encoder;
+	
 	public Page<ProjectManager> getAllProjectManagers(Pageable pageable) {
 
 		return projectManagerRepo.findAll(pageable);
@@ -60,11 +65,11 @@ public class ProjectManagerService {
 		ProjectManager new_pm = new ProjectManager();
 		new_pm.setFull_name(projectManagerDTO.getFull_name());
 		new_pm.setEmail(projectManagerDTO.getEmail());
-		new_pm.setPassword(projectManagerDTO.getPassword());
+		new_pm.setPassword(encoder.encode(projectManagerDTO.getPassword()));
 		new_pm.setDepartment(projectManagerDTO.getDepartment());
 		new_pm.setCreatedDate(LocalDateTime.now());
 		new_pm.setLastUpdatedAt(LocalDateTime.now());
-
+		new_pm.setRole(Role.PM);
 		new_pm.setTaskAssignedBy(new HashSet<Task>());
 		new_pm.setTaskAssignedTo(new HashSet<Task>());
 
@@ -86,7 +91,7 @@ public class ProjectManagerService {
 
 		existing_pm.setFull_name(projectManagerDTO.getFull_name());
 		existing_pm.setEmail(projectManagerDTO.getEmail());
-		existing_pm.setPassword(projectManagerDTO.getPassword());
+		existing_pm.setPassword(encoder.encode(projectManagerDTO.getPassword()));
 		existing_pm.setDepartment(projectManagerDTO.getDepartment());
 		existing_pm.setLastUpdatedAt(LocalDateTime.now());
 

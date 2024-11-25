@@ -1,6 +1,7 @@
 package com.dhairya.taskMaster.DTOs;
 
 import com.dhairya.taskMaster.enums.Department;
+import com.dhairya.taskMaster.enums.Role;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

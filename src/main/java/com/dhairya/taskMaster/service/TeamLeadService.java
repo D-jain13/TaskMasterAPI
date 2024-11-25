@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dhairya.taskMaster.DTOs.TeamLeadDTO;
@@ -18,6 +19,7 @@ import com.dhairya.taskMaster.entity.Project;
 import com.dhairya.taskMaster.entity.ProjectManager;
 import com.dhairya.taskMaster.entity.Task;
 import com.dhairya.taskMaster.entity.TeamLead;
+import com.dhairya.taskMaster.enums.Role;
 import com.dhairya.taskMaster.exception.ResourceAlreadyExistsException;
 import com.dhairya.taskMaster.exception.ResourceNotFoundException;
 import com.dhairya.taskMaster.repository.ProjectManagerRepo;
@@ -30,6 +32,9 @@ public class TeamLeadService {
 	
 	@Autowired
 	ProjectManagerRepo projectManagerRepo;
+	
+	@Autowired
+	PasswordEncoder encoder;
 	
 	public Page<TeamLead> getAllTeamLead(Pageable pageable) {
 		 
@@ -62,11 +67,12 @@ public class TeamLeadService {
 		
 		new_tl.setFull_name(teamLeadDTO.getFull_name());
 		new_tl.setEmail(teamLeadDTO.getEmail());
-		new_tl.setPassword(teamLeadDTO.getPassword());
+		new_tl.setPassword(encoder.encode(teamLeadDTO.getPassword()));
 		new_tl.setDepartment(teamLeadDTO.getDepartment());
 		new_tl.setCreatedDate(LocalDateTime.now());
 		new_tl.setLastUpdatedAt(LocalDateTime.now());
 		new_tl.setTaskAssignedBy(new HashSet<Task>());
+		new_tl.setRole(Role.TL);
 		new_tl.setTaskAssignedTo(new HashSet<Task>());
 		
 		ProjectManager pm = projectManagerRepo.findById(teamLeadDTO.getProject_manager_id()).orElseThrow(() -> new ResourceNotFoundException("Project Manager", "Id", teamLeadDTO.getProject_manager_id()));
@@ -84,7 +90,7 @@ public class TeamLeadService {
 		
 		tl.setFull_name(teamLeadDTO.getFull_name());
 		tl.setEmail(teamLeadDTO.getEmail());
-		tl.setPassword(teamLeadDTO.getPassword());
+		tl.setPassword(encoder.encode(teamLeadDTO.getPassword()));
 		tl.setLastUpdatedAt(LocalDateTime.now());
 		tl.setDepartment(teamLeadDTO.getDepartment());
 		

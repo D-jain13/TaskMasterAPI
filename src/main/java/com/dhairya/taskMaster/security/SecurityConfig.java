@@ -59,7 +59,6 @@ public class SecurityConfig {
 //				.requestMatchers("/hod/**").hasRole("HOD").requestMatchers("/pm/**").hasAnyRole("PM", "HOD")
 //				.requestMatchers("/tl/**").hasAnyRole("PM", "TL", "HOD").requestMatchers("/dev/**")
 //				.hasAnyRole("HOD", "DEV", "PM", "TL")
-				 .requestMatchers("/**").permitAll()
 				.requestMatchers("/login","/hod/**").permitAll()
 				.requestMatchers("/refreshToken").permitAll()
 				.requestMatchers("/developer/getMyTasks/**").hasRole("DEV")

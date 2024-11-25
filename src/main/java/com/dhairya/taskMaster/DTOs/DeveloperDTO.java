@@ -34,9 +34,7 @@ public class DeveloperDTO {
 	private Department department;
 	
 	private SubDepartment subDepartment;
-	
-	private Role role;
-	
+		
 	@NotBlank(message = "Team lead id cannot be empty")
 	private String team_lead_id;
 	

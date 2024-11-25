@@ -31,6 +31,10 @@ public class RefreshTokenService {
 	}
 
 
+	public Optional<RefreshToken> findByToken(String token) {
+		return refreshTokenRepo.findByToken(token);
+	}
+	
 	public RefreshToken verifyExpiration(RefreshToken token) {
 		if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
 			refreshTokenRepo.delete(token);

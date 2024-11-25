@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import com.dhairya.taskMaster.entity.Project;
 import com.dhairya.taskMaster.entity.Task;
 import com.dhairya.taskMaster.entity.TeamLead;
 import com.dhairya.taskMaster.enums.Department;
+import com.dhairya.taskMaster.enums.Role;
 import com.dhairya.taskMaster.enums.Status;
 import com.dhairya.taskMaster.exception.ResourceNotFoundException;
 import com.dhairya.taskMaster.repository.DeveloperRepo;
@@ -42,8 +44,9 @@ public class DeveloperService {
 	@Autowired
 	TaskRepo taskRepo;
 
-//	@Autowired
-//	PasswordEncoder encoder;
+	@Autowired
+	PasswordEncoder encoder;
+	
 	// To get list of all the developers
 	public Page<Developer> getAllDevelopers(Pageable pageable) {
 		return developerRepo.findAll(pageable);
@@ -92,13 +95,13 @@ public class DeveloperService {
 
 		new_dev.setFull_name(developerDTO.getFull_name());
 		new_dev.setEmail(developerDTO.getEmail());
-		//new_dev.setPassword(encoder.encode(developerDTO.getPassword()));
-		new_dev.setPassword(developerDTO.getPassword());
+		new_dev.setPassword(encoder.encode(developerDTO.getPassword()));
+		//new_dev.setPassword(developerDTO.getPassword());
 		new_dev.setDepartment(developerDTO.getDepartment());
 		new_dev.setTaskAssignedBy(new HashSet<Task>());
 		new_dev.setTaskAssignedTo(new HashSet<Task>());
 		new_dev.setSubDepartment(developerDTO.getSubDepartment());
-		new_dev.setRole(developerDTO.getRole());
+		new_dev.setRole(Role.DEV);
 		new_dev.setCreatedDate(LocalDateTime.now());
 		new_dev.setLastUpdatedAt(LocalDateTime.now());
 
@@ -135,7 +138,7 @@ public class DeveloperService {
 
 		existing_dev.setFull_name(developerDTO.getFull_name());
 		existing_dev.setEmail(developerDTO.getEmail());
-		existing_dev.setPassword(developerDTO.getPassword());
+		existing_dev.setPassword(encoder.encode(developerDTO.getPassword()));
 		existing_dev.setDepartment(developerDTO.getDepartment());
 		existing_dev.setSubDepartment(developerDTO.getSubDepartment());
 		existing_dev.setLastUpdatedAt(LocalDateTime.now());
